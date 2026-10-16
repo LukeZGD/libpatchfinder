@@ -29,6 +29,19 @@
 
 #include "../include/libpatchfinder/machopatchfinder64.hpp"
 
+#ifndef LC_FILESET_ENTRY
+#define LC_FILESET_ENTRY (0x35 | LC_REQ_DYLD)
+
+struct fileset_entry_command {
+    uint32_t cmd;
+    uint32_t cmdsize;
+    uint32_t vmaddr;
+    uint64_t fileoff;
+    uint32_t entry_id;
+    uint32_t reserved;
+};
+#endif
+
 using namespace tihmstar::patchfinder;
 using namespace tihmstar::libinsn;
 using namespace tihmstar::libinsn::arm64;
