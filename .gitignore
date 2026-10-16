@@ -6,7 +6,6 @@
 *.[oa]
 *.a
 *.diff
-*.in
 *.la
 *.lo
 *.o
