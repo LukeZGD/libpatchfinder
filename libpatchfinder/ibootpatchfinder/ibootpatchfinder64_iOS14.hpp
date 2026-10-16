@@ -22,6 +22,12 @@ namespace tihmstar {
             virtual std::vector<patch> get_sigcheck_img4_patch() override;
 
             virtual std::vector<patch> get_change_reboot_to_fsboot_patch() override;
+
+            virtual std::vector<patch> local_boot_patch() override;
+
+            virtual std::vector<patch> renamed_snapshot_patch() override;
+
+            virtual std::vector<patch> rename_kcache_to_kcachd_patch() override;
             
             virtual std::vector<patch> get_boot_arg_patch(const char *bootargs) override;
             

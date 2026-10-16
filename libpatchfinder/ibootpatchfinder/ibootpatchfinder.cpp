@@ -109,6 +109,18 @@ std::vector<patch> ibootpatchfinder::get_change_reboot_to_fsboot_patch(){
     FAIL_UNIMPLEMENTED;
 }
 
+std::vector<patch> ibootpatchfinder64::local_boot_patch(){
+    FAIL_UNIMPLEMENTED;
+}
+
+std::vector<patch> ibootpatchfinder64::renamed_snapshot_patch(){
+    FAIL_UNIMPLEMENTED;
+}
+
+std::vector<patch> ibootpatchfinder64::rename_kcache_to_kcachd_patch(){
+    FAIL_UNIMPLEMENTED;
+}
+
 ibootpatchfinder::loc64_t ibootpatchfinder::find_iBoot_logstr(uint64_t loghex, int skip, uint64_t shortdec){
     FAIL_UNIMPLEMENTED;
 }

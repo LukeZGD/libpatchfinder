@@ -7,6 +7,7 @@
 //
 
 #include <libgeneral/macros.h>
+#include <stdio.h>
 #include "ibootpatchfinder64_iOS14.hpp"
 #include "../all64.h"
 #include <string.h>
@@ -126,6 +127,55 @@ std::vector<patch> ibootpatchfinder64_iOS14::get_change_reboot_to_fsboot_patch()
     loc_t fsbootfunction = deref(fsbootrefstr+8);
     debug("fsbootfunction=0x%016llx",fsbootfunction);
     patches.push_back({rebootrefstr+8,&fsbootfunction,sizeof(loc_t)}); //rewrite pointer to point to fsboot
+
+    return patches;
+}
+
+std::vector<patch> ibootpatchfinder64_iOS14::local_boot_patch(){
+    std::vector<patch> patches;
+
+    loc_t debug_uartsstr = findstr("debug-uarts", true);
+    debug("debug-uartsstr=%p", debug_uartsstr);
+
+    loc_t debug_uartsrefstr = find_literal_ref(debug_uartsstr);
+    debug("debug-uartsrefstr=%p",debug_uartsrefstr);
+
+    vmem iter(*_vmem, debug_uartsrefstr);
+
+    while (++iter != insn::bl);
+    ++iter;
+    while (++iter != insn::bl);
+
+    loc_t third_blptr = iter;
+    debug("third_blptr=%p",third_blptr);
+
+    loc_t localbootfunction = iter().imm();
+    debug("localbootfunction=%p",localbootfunction);
+
+    patches.push_back({localbootfunction,"\x00\x00\x80\x52" /*mov w0, #0*/,4});
+    patches.push_back({localbootfunction+4,"\xC0\x03\x5F\xD6" /*ret*/,4});
+
+    return patches;
+}
+
+std::vector<patch> ibootpatchfinder64_iOS14::renamed_snapshot_patch(){
+    std::vector<patch> patches;
+
+    loc_t os_updatestr = findstr("com.apple.os.update-", true);
+    debug("os-updatestr=%p", os_updatestr);
+
+    patches.push_back({os_updatestr,"palera1n.rfsnapshot-",20});
+
+    return patches;
+}
+
+std::vector<patch> ibootpatchfinder64_iOS14::rename_kcache_to_kcachd_patch(){
+    std::vector<patch> patches;
+
+    loc_t kcachestr = findstr("/System/Library/Caches/com.apple.kernelcaches/kernelcache", true);
+    debug("kcachestr=%p",kcachestr);
+
+    patches.push_back({kcachestr + 56,"d" /*doubt_work*/,1});
 
     return patches;
 }

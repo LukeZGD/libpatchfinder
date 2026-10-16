@@ -115,6 +115,21 @@ namespace tihmstar {
              */
             virtual std::vector<patch> get_change_reboot_to_fsboot_patch();
 
+            /*
+                local boot
+             */
+            virtual std::vector<patch> local_boot_patch();
+
+            /*
+                change snapshot name
+             */
+            virtual std::vector<patch> renamed_snapshot_patch();
+
+            /*
+                kernelcache -> kernelcachd
+             */
+            virtual std::vector<patch> rename_kcache_to_kcachd_patch();
+
 
             virtual loc64_t find_iBoot_logstr(uint64_t loghex, int skip = 0, uint64_t shortdec = 0);
             
